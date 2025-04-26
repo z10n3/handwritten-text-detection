@@ -1,9 +1,13 @@
 import streamlit as st
 import cv2
+import os
 import pytesseract
 import numpy as np
 from PIL import Image
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+if os.name == 'nt': 
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+else: 
+    pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
 
 st.set_page_config(page_title="Handwritten Text Detection", layout="centered")
 
