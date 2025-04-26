@@ -3,6 +3,7 @@ import cv2
 import pytesseract
 import numpy as np
 from PIL import Image
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 st.set_page_config(page_title="Handwritten Text Detection", layout="centered")
 
@@ -28,7 +29,7 @@ if uploaded_file:
     text = pytesseract.image_to_string(thresh, config=custom_config)
 
     st.subheader("Original Image")
-    st.image(image, use_column_width=True)
+    st.image(image, use_container_width=True)
 
     st.subheader("Detected Text")
     st.code(text.strip() or "[No text detected]", language="text")
