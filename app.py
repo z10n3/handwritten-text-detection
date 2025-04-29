@@ -1,13 +1,15 @@
-import streamlit as st
-import easyocr
+import os
+import cv2
 import numpy as np
-from PIL import Image
 import pandas as pd
+import streamlit as st
+from PIL import Image
+import easyocr
 
-# Streamlit UI setup
-st.set_page_config(page_title="EasyOCR Handwritten Text Detection", layout="centered")
-st.title("✍️ Handwritten Text Detection with EasyOCR")
-st.write("Upload a photo of handwritten text and see the extracted content.")
+# Streamlit page setup
+st.set_page_config(page_title="Handwritten Text Detection", layout="centered")
+st.title("📝 Handwritten Text Detection with EasyOCR")
+st.write("Upload an image with handwritten text to extract its contents.")
 
 # Optional: show CSV if it exists
 csv_path = 'data/english.csv'
@@ -16,25 +18,28 @@ if csv_path and os.path.exists(csv_path):
     st.subheader("📄 CSV Sample Data")
     st.write(df.head())
 
-# Image uploader
-uploaded_file = st.file_uploader("📷 Upload an image", type=["png", "jpg", "jpeg"])
+# File uploader
+uploaded_file = st.file_uploader("Choose an image...", type=["png", "jpg", "jpeg"])
 
 if uploaded_file:
     image = Image.open(uploaded_file).convert("RGB")
+    image_np = np.array(image)
+
+    # Display original image
     st.subheader("🖼️ Uploaded Image")
     st.image(image, use_container_width=True)
 
     # Initialize EasyOCR reader
-    reader = easyocr.Reader(['en'], gpu=False)  # Use 'gpu=True' if CUDA is available
+    reader = easyocr.Reader(['en'])  # Add other language codes if needed
 
-    # Convert PIL to NumPy for EasyOCR
-    image_np = np.array(image)
+    # Run OCR
+    with st.spinner("🔍 Detecting text..."):
+        results = reader.readtext(image_np)
 
-    # OCR process
-    result = reader.readtext(image_np)
-
-    # Extract and display text
-    extracted_text = "\n".join([item[1] for item in result])
-
-    st.subheader("🧾 Detected Text")
-    st.code(extracted_text.strip() or "[No text detected]", language="text")
+    # Show extracted text
+    st.subheader("📃 Detected Text")
+    if results:
+        for i, (bbox, text, confidence) in enumerate(results, 1):
+            st.write(f"**{i}.** {text} (Confidence: {confidence:.2f})")
+    else:
+        st.write("No text detected.")
