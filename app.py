@@ -11,7 +11,7 @@ uploaded_image = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"]
 
 if uploaded_image:
     image = Image.open(uploaded_image)
-    st.image(image, caption="Uploaded Image", use_column_width=True)
+    st.image(image, caption="Uploaded Image", use_container_width=True)
 
     reader = easyocr.Reader(['en'], gpu=False)
     results = reader.readtext(image)
