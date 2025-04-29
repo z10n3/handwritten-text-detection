@@ -1,6 +1,5 @@
 streamlit
-opencv-python
-pytesseract
+transformers
+torch
+pandas
 Pillow
-numpy
-py7zr
