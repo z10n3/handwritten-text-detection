@@ -1,22 +1,23 @@
 import streamlit as st
-import easyocr
 from PIL import Image
-import os
+import easyocr
+from spellchecker import SpellChecker
 
-st.set_page_config(page_title="Text Detection", layout="centered")
+st.set_page_config(page_title="Handwritten Text Detection", layout="centered")
+st.title("🧾 Detected Text")
 
-st.title("📝 Text Detection with EasyOCR")
+uploaded_file = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg"])
 
-uploaded_image = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
-
-if uploaded_image:
-    image = Image.open(uploaded_image)
+if uploaded_file:
+    image = Image.open(uploaded_file)
     st.image(image, caption="Uploaded Image", use_container_width=True)
 
-    reader = easyocr.Reader(['en'], gpu=False)
-    results = reader.readtext(image)
+    reader = easyocr.Reader(['en'])
+    results = reader.readtext(np.array(image), detail=1)
 
-    detected_text = " ".join([text for _, text, _ in results])
+    words = [text for (_, text, confidence) in results]
+    spell = SpellChecker()
+    corrected_words = [spell.correction(word) if word.isalpha() else word for word in words]
 
-    st.subheader("🧾 Detected Text")
-    st.write(detected_text)
+    detected_text = " ".join(corrected_words)
+    st.markdown(f"**{detected_text}**")
