@@ -6,7 +6,7 @@ from spellchecker import SpellChecker
 
 st.set_page_config(page_title="Handwritten Text Reader", layout="centered")
 
-st.title("✍️ Handwritten Text Reader")
+st.title("Handwritten Text Reader")
 
 uploaded_file = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
 
@@ -27,5 +27,5 @@ if uploaded_file is not None:
 
     final_text = ' '.join(corrected_text)
 
-    st.subheader("🧾 Detected Text")
+    st.subheader("Detected Text")
     st.write(final_text)
