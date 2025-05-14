@@ -31,10 +31,4 @@ if uploaded_file is not None:
     st.subheader("Detected Text")
     st.write(final_text)
     
-    spell = Speller()
-corrected_text = [spell(line) for line in results]
 
-final_text = ' '.join(corrected_text)
-
-st.subheader("Detected Text")
-st.write(final_text)
