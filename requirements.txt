@@ -5,5 +5,4 @@ pillow
 numpy
 pandas
 pyspellchecker
-autocorrect
 
