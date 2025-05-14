@@ -2,6 +2,7 @@ import streamlit as st
 import easyocr
 import numpy as np
 from PIL import Image
+from autocorrect import Speller
 from spellchecker import SpellChecker
 
 st.set_page_config(page_title="Handwritten Text Reader", layout="centered")
@@ -29,3 +30,11 @@ if uploaded_file is not None:
 
     st.subheader("Detected Text")
     st.write(final_text)
+    
+    spell = Speller()
+corrected_text = [spell(line) for line in results]
+
+final_text = ' '.join(corrected_text)
+
+st.subheader("Detected Text")
+st.write(final_text)
