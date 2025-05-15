@@ -31,7 +31,7 @@ if uploaded_file is not None:
     image = Image.open(uploaded_file)
     st.image(image, caption="Uploaded Image", use_container_width=True)
 
-    reader = easyocr.Reader(['en', 'ru', 'uz-Cyrl'], gpu=False)
+    reader = easyocr.Reader(['en', 'ru'], gpu=False)
     results = reader.readtext(np.array(image), detail=0)
 
     corrected_text = []
