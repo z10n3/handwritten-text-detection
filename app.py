@@ -2,7 +2,6 @@ import streamlit as st
 import easyocr
 import numpy as np
 from PIL import Image
-from autocorrect import Speller
 from spellchecker import SpellChecker
 
 st.set_page_config(page_title="Handwritten Text Reader", layout="centered")
